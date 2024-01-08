@@ -14,7 +14,7 @@ def read_data(filename):
 def generate_line_chart(data, metrics1="", metrics2="", metrics3=""):
     """Generate Line charts."""
     chart_data = data.copy()
-    chart_data['Date'] = pd.to_datetime(chart_data['Date'])
+    chart_data['Date'] = pd.to_datetime(chart_data['Date'], format='%m/%d/%Y')
     chart_data['Date'] = chart_data['Date'].dt.strftime('%m-%d-%Y')
 
     chart_data = chart_data.sort_values(by='Date')
