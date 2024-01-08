@@ -11,23 +11,24 @@ def read_data(filename):
     df['Date'] = pd.to_datetime(df['Date'])  # Convert 'Date' column to datetime
     return df
 
-def generate_line_chart(data, metrics1="", metrics2="", metrics3=""):
+def generate_line_chart(data):
     """Generate Line charts."""
-    chart_data = data.copy()
-    chart_data['Date'] = pd.to_datetime(chart_data['Date'], format='%m/%d/%Y')
-    chart_data['Date'] = chart_data['Date'].dt.strftime('%m-%d-%Y')
 
-    chart_data = chart_data.sort_values(by='Date')
+    # Display the data
+    st.dataframe(data)
 
-    # Plot the line charts
-    if metrics1 in chart_data.columns:
-        st.line_chart(data=chart_data,x='Date',y=metrics1)
+    # Create separate line charts for each count
+    for count_type in ['Watch time (mins)', 'Stream time (mins)', 'Peak viewers']:
+        fig = px.line(data, x='Date', y=count_type, title=f'{count_type} Over Time')
 
-    if metrics2 in chart_data.columns:
-        st.line_chart(data=chart_data,x='Date',y=metrics2)
+        # Customize the layout (optional)
+        fig.update_layout(
+            xaxis_title='Date',
+            yaxis_title=count_type,
+        )
 
-    if metrics3 in chart_data.columns:
-        st.line_chart(data=chart_data,x='Date',y=metrics3)
+        # Display the chart
+        st.plotly_chart(fig)
 
 
 
@@ -79,7 +80,7 @@ def main():
 
     # Generate line chart
     st.subheader("Axie Infinity Trend")
-    generate_line_chart(data,'Watch time (mins)', 'Stream time (mins)', 'Average viewers')
+    generate_line_chart(data)
 
     piedf_sov = pd.read_csv('csvs/SOV - Twitch_axie_vs_field.csv')
 
