@@ -11,23 +11,23 @@ def read_data(filename):
     df['Date'] = pd.to_datetime(df['Date'])  # Convert 'Date' column to datetime
     return df
 
-def generate_line_chart(data, metrics1="", metrics2="", metrics3=""):
+def generate_line_chart(data,):
     """Generate Line charts."""
-    chart_data = data.copy()
-    chart_data['Date'] = pd.to_datetime(chart_data['Date'], format='%m/%d/%Y')
-    chart_data['Date'] = chart_data['Date'].dt.strftime('%m-%d-%Y')
+    # Display the data
+    st.dataframe(data)
 
-    chart_data = chart_data.sort_values(by='Date')
+    # Create separate line charts for each count
+    for count_type in ['View Count', 'Like Count', 'Comment Count']:
+        fig = px.line(data, x='Date', y=count_type, title=f'{count_type} Over Time')
 
-    # Plot the line charts
-    if metrics1 in chart_data.columns:
-        st.line_chart(data=chart_data,x='Date',y=metrics1)
+        # Customize the layout (optional)
+        fig.update_layout(
+            xaxis_title='Date',
+            yaxis_title=count_type,
+        )
 
-    if metrics2 in chart_data.columns:
-        st.line_chart(data=chart_data,x='Date',y=metrics2)
-
-    if metrics3 in chart_data.columns:
-        st.line_chart(data=chart_data,x='Date',y=metrics3)
+        # Display the chart
+        st.plotly_chart(fig)
 
 
 def generate_pie_chart(data,widget_id,chart_title):
@@ -78,7 +78,7 @@ def main():
 
     # Generate line chart
     st.subheader("Axie Infinity Trend")
-    generate_line_chart(data,'View Count', 'Like Count', 'Comment Count')
+    generate_line_chart(data)
 
 
     # Generate pie chart
