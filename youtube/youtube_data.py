@@ -120,7 +120,6 @@ api_key = "AIzaSyBO5VBo-XQQD3R4fVY4CYJ8ExGtEy_jw9w"
 
 game_list = [
     'Townstar Game',
-    'Parallel Game',
     'Parallel TCG',
     'Axie Infinity',
     'Splinterlands',
