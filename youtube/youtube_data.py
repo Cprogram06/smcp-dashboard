@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 now = datetime.utcnow()
 
 # Define a datetime object for 7 days ago
-days_ago = now - timedelta(days=7)
+days_ago = now - timedelta(days=1)
 
 # Format the datetime objects as ISO 8601 strings
 now_str = now.strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -22,7 +22,7 @@ def get_video_data(api_key, search_query):
     video_data = []
     now = datetime.datetime.utcnow()
     days_ago = now - datetime.timedelta(
-        days=7
+        days=1
     )  # Get videos published within the last 7 days
     days_ago_str = days_ago.strftime("%Y-%m-%dT%H:%M:%SZ")
 
