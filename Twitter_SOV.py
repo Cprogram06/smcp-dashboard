@@ -79,7 +79,7 @@ def main():
 
     # Generate line chart
     st.subheader("Axie Infinity Trend")
-    generate_line_chart(data,'Tweet','Likes Count','Retweet Count')
+    generate_line_chart(data)
 
     pie_df = pd.read_csv('csvs/SOV - Twitter_axie_vs_field.csv')
 
