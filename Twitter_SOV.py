@@ -12,7 +12,7 @@ def read_data(filename):
     return df
 
 
-def generate_line_chart(data,metrics1="",metrics2="",metrics3=""):
+def generate_line_chart(data):
     """Generate Line charts."""
     # Display the data
     st.dataframe(data)
