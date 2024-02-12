@@ -12,23 +12,19 @@ def read_data(filename):
     return df
 
 
-def generate_line_chart(data):
-    """Generate Line charts."""
-    # Display the data
-    st.dataframe(data)
+def generate_line_chart(data,metrics1="",metrics2="",metrics3=""):
+    """Generate Line chart."""
+    chart_data = data.set_index('Date')  # Set 'Date' column as index
 
-    # Create separate line charts for each count
-    for count_type in ['Tweet Count', 'Like Count', 'Retweet Count']:
-        fig = px.line(data, x='Date', y=count_type, title=f'{count_type} Over Time')
+    # Get user selection from multiselect checkbox
+    options = st.multiselect('Select Counts to Display', [metrics1, metrics2, metrics3], default=[metrics1,metrics2,metrics3])
 
-        # Customize the layout (optional)
-        fig.update_layout(
-            xaxis_title='Date',
-            yaxis_title=count_type,
-        )
-
-        # Display the chart
-        st.plotly_chart(fig)
+    # Plot the line chart based on user selection
+    selected_columns = [option for option in options if option in chart_data.columns]
+    if selected_columns:
+        st.line_chart(chart_data[selected_columns])
+    else:
+        st.write("Please select at least one count to display.")
 
 
 def generate_pie_chart(data,widget_id,chart_title):
@@ -79,7 +75,7 @@ def main():
 
     # Generate line chart
     st.subheader("Axie Infinity Trend")
-    generate_line_chart(data)
+    generate_line_chart(data,'Tweet','Likes Count','Retweet Count')
 
     pie_df = pd.read_csv('csvs/SOV - Twitter_axie_vs_field.csv')
 
