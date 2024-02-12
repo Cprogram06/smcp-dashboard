@@ -12,19 +12,22 @@ def read_data(filename):
     return df
 
 
-def generate_line_chart(data,metrics1="",metrics2="",metrics3=""):
+def generate_line_chart(data, metrics1="", metrics2="", metrics3=""):
     """Generate Line chart."""
-    chart_data = data.set_index('Date')  # Set 'Date' column as index
+    chart_data = data.copy()
+    chart_data['Date'] = pd.to_datetime(chart_data['Date'])  # Convert 'Date' column to datetime
+    chart_data = chart_data.set_index('Date')  # Set 'Date' column as index
 
     # Get user selection from multiselect checkbox
-    options = st.multiselect('Select Counts to Display', [metrics1, metrics2, metrics3], default=[metrics1,metrics2,metrics3])
+    options = st.multiselect('Select Counts to Display', [metrics1, metrics2, metrics3], default=[metrics1, metrics2, metrics3])
 
     # Plot the line chart based on user selection
     selected_columns = [option for option in options if option in chart_data.columns]
     if selected_columns:
-        st.line_chart(chart_data[selected_columns])
+        st.line_chart(chart_data[selected_columns], use_container_width=True)
     else:
         st.write("Please select at least one count to display.")
+
 
 
 def generate_pie_chart(data,widget_id,chart_title):
