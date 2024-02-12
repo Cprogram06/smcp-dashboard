@@ -13,18 +13,22 @@ def read_data(filename):
 
 
 def generate_line_chart(data,metrics1="",metrics2="",metrics3=""):
-    """Generate Line chart."""
-    chart_data = data.set_index('Date')  # Set 'Date' column as index
+    """Generate Line charts."""
+    # Display the data
+    st.dataframe(data)
 
-    # Get user selection from multiselect checkbox
-    options = st.multiselect('Select Counts to Display', [metrics1, metrics2, metrics3], default=[metrics1,metrics2,metrics3])
+    # Create separate line charts for each count
+    for count_type in ['Tweet Count', 'Like Count', 'Retweet Count']:
+        fig = px.line(data, x='Date', y=count_type, title=f'{count_type} Over Time')
 
-    # Plot the line chart based on user selection
-    selected_columns = [option for option in options if option in chart_data.columns]
-    if selected_columns:
-        st.line_chart(chart_data[selected_columns])
-    else:
-        st.write("Please select at least one count to display.")
+        # Customize the layout (optional)
+        fig.update_layout(
+            xaxis_title='Date',
+            yaxis_title=count_type,
+        )
+
+        # Display the chart
+        st.plotly_chart(fig)
 
 
 def generate_pie_chart(data,widget_id,chart_title):
@@ -73,21 +77,9 @@ def main():
     filename = 'csvs/SOV - SoV_twitter.csv'
     data = read_data(filename)
 
-    # ronin_filename = 'csvs/SOV - SoV_Ronin.csv'
-    # ronin_data = read_data(ronin_filename)
-
-    # cyber_filename = 'csvs/SOV - SoV_CyberKong.csv'
-    # cyber_data = read_data(cyber_filename)
-
     # Generate line chart
     st.subheader("Axie Infinity Trend")
     generate_line_chart(data,'Tweet','Likes Count','Retweet Count')
-
-    # st.subheader("Ronin Network Trend")
-    # generate_line_chart(ronin_data,'Tweet ','Likes Count ','Retweet Count ')
-
-    # st.subheader("CyberKongz Trend")
-    # generate_line_chart(cyber_data,'Tweet Count','Likes Count   ','Retweet Count   ')
 
     pie_df = pd.read_csv('csvs/SOV - Twitter_axie_vs_field.csv')
 
