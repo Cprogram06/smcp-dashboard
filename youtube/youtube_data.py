@@ -27,7 +27,7 @@ def get_video_data(api_key, search_query):
     days_ago_str = days_ago.strftime("%Y-%m-%dT%H:%M:%SZ")
 
     for i in range(6):
-        url = f"https://www.googleapis.com/youtube/v3/search?part=snippet&q={search_query}&type=video&maxResults=50&key={api_key}&publishedAfter={days_ago_str}"
+        url = f"https://www.googleapis.com/youtube/v3/search?part=snippet&q=allintitle%3A{search_query}&type=video&maxResults=50&key={api_key}&publishedAfter={days_ago_str}"
         if i > 0:
             url += f"&pageToken={next_page_token}"
 
@@ -115,7 +115,7 @@ def convert_to_csv(game, data):
     df.to_csv(f"{game_name}.csv")
 
 
-api_key = "AIzaSyBFzQD5yQeerxH05Hw9UU55La3HZCFUk04"
+api_key = "AIzaSyBO5VBo-XQQD3R4fVY4CYJ8ExGtEy_jw9w"
 
 game_list = [
     'Pixels Online',
