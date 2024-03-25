@@ -1,19 +1,18 @@
-Game,Watch time (mins),Stream time (mins),Peak viewers,Peak channels,Streamers,Average viewers,Average channels,Average viewer ratio,
-Big Time,Big Time,2283600,110940,1488,28,256,226,11,20.58
-Pixels,Pixels,1400760,30060,4032,10,92,138,2,46.6
-Axie Infinity,Apeiron,708960,7500,3138,4,37,70,0,94.53
-Gods Unchained,Gods Unchained,539220,24840,1040,9,66,53,2,21.71
-Apeiron,Axie Infinity,483000,28740,932,17,179,47,2,16.81
-Illuvium,Parallel,284880,12600,1613,6,37,28,1,22.61
-Splinterlands,Illuvium,111660,11640,295,5,51,11,1,9.59
-Parallel,The Sandbox,70320,5460,47,4,16,6,0,12.88
-Skyweaver,Skyweaver,66660,5040,91,4,15,6,0,13.23
-The Sandbox,The Sandbox,36060,10800,52,4,17,3,1,3.34
-The Sandbox,Splinterlands,27360,3420,25,2,10,2,0,8
-Decentraland,The Machines Arena,13200,780,43,2,2,1,0,16.92
-The Machines Arena,Decentraland,11100,4380,19,4,11,1,0,2.53
-DEADROP,DEADROP,3600,1080,23,6,8,0,0,3.33
-Ev.io,Thetan Arena,720,960,2,1,5,0,0,0.75
-Town Star,Ev.io,660,720,6,1,7,0,0,0.92
-Thetan Arena,Town Star,600,660,2,2,2,0,0,0.91
-Undead Blocks,Undead Blocks,240,240,2,1,1,0,0,1
+Game,Watch time (mins),Stream time (mins),Peak viewers,Peak channels,Streamers,Average viewers,Average channels,Average viewer ratio
+Big Time,2344680,101700,3029,27,244,232,10,23.05
+Pixels,915840,30840,457,11,101,90,3,29.7
+Apeiron,689520,7380,1348,5,39,68,0,93.43
+Gods Unchained,501780,24060,130,8,75,49,2,20.86
+Axie Infinity,458460,26220,308,10,98,45,2,17.49
+The Sandbox,89640,5040,64,3,10,8,0,17.79
+Parallel,87540,17100,46,8,41,8,1,5.12
+Illuvium,80100,9840,346,5,40,7,0,8.14
+Skyweaver,67500,5220,77,3,12,6,0,12.93
+Splinterlands,51900,6120,28,3,13,5,0,8.48
+The Sandbox,46920,8760,65,3,18,4,0,5.36
+Decentraland,11880,3780,25,3,10,1,0,3.14
+The Machines Arena,9120,720,26,2,3,0,0,12.67
+DEADROP,4320,1200,17,4,7,0,0,3.6
+Thetan Arena,660,780,2,1,5,0,0,0.85
+Ev.io,540,480,6,2,6,0,0,1.13
+Town Star,540,480,2,1,1,0,0,1.13
