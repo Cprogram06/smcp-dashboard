@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 now = datetime.utcnow()
 
 # Define a datetime object for 7 days ago
-days_ago = now - timedelta(days=7)
+days_ago = now - timedelta(days=30)
 
 # Format the datetime objects as ISO 8601 strings
 now_str = now.strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -118,35 +118,38 @@ def convert_to_csv(game, data):
 api_key = "AIzaSyBO5VBo-XQQD3R4fVY4CYJ8ExGtEy_jw9w"
 
 game_list = [
-    'Pixels Online',
-    'Apeiron',
-    'Townstar Game',
-    'Parallel TCG',
-    'Axie Infinity',
-    'Splinterlands',
-    'Deadrop',
-    'Illuvium',
-    'GodsUnchained',
-    'The Sandbox',
-    'The Machines Arena',
-    'Decentraland',
-    'Other Side Meta',
-    'Tribesters World',
-    'Battle Bears',
-    'Aurory Project',
-    'zed_run',
-    'Nine Chronicles',
-    'Walken_io',
-    'Blockchain Cutie',
-    '0xSunflowerland',
-    'Undeadblocks',
-    'Dehero',
-    'Panzerdogs',
-    'Chain Guardians',
-    'Cryptoblades',
-    'play_evio',
-    'Spider Tanks',
-    'League Kingdoms',
+    # 'Pixels Online',
+    # 'Apeiron',
+    # 'Townstar Game',
+    # 'Parallel TCG',
+    # 'Axie Infinity',
+    # 'Splinterlands',
+    # 'Deadrop',
+    # 'Illuvium',
+    # 'GodsUnchained',
+    # 'The Sandbox',
+    # 'The Machines Arena',
+    # 'Decentraland',
+    # 'Other Side Meta',
+    # 'Tribesters World',
+    # 'Battle Bears',
+    # 'Aurory Project',
+    # 'zed_run',
+    # 'Nine Chronicles',
+    # 'Walken_io',
+    # 'Blockchain Cutie',
+    # '0xSunflowerland',
+    # 'Undeadblocks',
+    # 'Dehero',
+    # 'Panzerdogs',
+    # 'Chain Guardians',
+    # 'Cryptoblades',
+    # 'play_evio',
+    # 'Spider Tanks',
+    # 'League Kingdoms',
+    'Hytopia',
+    'Hychain'
+
 ]
 
 for game in game_list:
