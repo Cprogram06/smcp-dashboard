@@ -21,14 +21,14 @@ def get_video_data(api_key, search_query):
     """Get video data."""
     video_data = []
     now = datetime.datetime.utcnow()
-    days_ago = now - datetime.timedelta(
-        days=7
-    )  # Get videos published within the last 7 days
+    days_ago = now - datetime.timedelta(days=30)  # Get videos published within the last 30 days
     days_ago_str = days_ago.strftime("%Y-%m-%dT%H:%M:%SZ")
 
-    for i in range(6):
+    next_page_token = None  # Initialize next_page_token to None
+
+    while True:
         url = f"https://www.googleapis.com/youtube/v3/search?part=snippet&q=allintitle%3A{search_query}&type=video&maxResults=50&key={api_key}&publishedAfter={days_ago_str}"
-        if i > 0:
+        if next_page_token:
             url += f"&pageToken={next_page_token}"
 
         response = requests.get(url)
@@ -95,6 +95,8 @@ def get_video_data(api_key, search_query):
             break
 
     return video_data
+
+
 
 def convert_to_csv(game, data):
     """Convert data to CSV."""
