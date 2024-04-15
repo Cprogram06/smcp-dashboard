@@ -1,9 +1,5 @@
-Game,Retweet Count,Likes Count,Tweet,SoV_Tweet,SoV_Likes,SoV_RTs
-@kaidrochronicle,5615,26192,8817,6996,,
-@pixels_online,4082,23515,7606,6184,,
-@AxieInfinity,1230,5944,1851,1502,,
-@ApeironNFT,689,2267,849,524,,
-@TribestersWorld,254,637,338,299,,
-@themachinesgame,191,657,215,149,,
-@AxieChampions,65,217,107,57,,
-@axieDoLL,4,34,24,6,,
+Game,View Count,Like Count,Comment Count,Subscriber Count,SoV_Views,SoV_Likes,SoV_Comments,SoV_Subscriber
+Axie Infinity,97422,4049,1279,0,62.44919937,59.43050051,58.72359963,
+Pixels Online,49919,2171,793,0,31.99894873,31.86555115,36.40955005,
+Apeiron,8486,581,102,0,5.43967385,8.527814472,4.683195592,
+The Machines Arena,175,12,4,0,0.112178049,0.176133862,0.183654729,
