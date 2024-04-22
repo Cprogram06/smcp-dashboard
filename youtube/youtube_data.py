@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 now = datetime.utcnow()
 
 # Define a datetime object for 7 days ago
-days_ago = now - timedelta(days=30)
+days_ago = now - timedelta(days=7)
 
 # Format the datetime objects as ISO 8601 strings
 now_str = now.strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -151,6 +151,11 @@ game_list = [
     'League Kingdoms',
     'Hytopia',
     'Hychain'
+    "Planet Mojo",
+    "Mystery Society",
+    "1Kin",
+    "Moonveil",
+    "Wilder World",
 
 ]
 
