@@ -150,7 +150,7 @@ game_list = [
     'Spider Tanks',
     'League Kingdoms',
     'Hytopia',
-    'Hychain'
+    'Hychain',
     "Planet Mojo",
     "Mystery Society",
     "1Kin",
