@@ -131,6 +131,7 @@ game_list = [
     'GodsUnchained',
     'The Sandbox',
     'The Machines Arena',
+    'Kaidronicle',
     'Decentraland',
     'Other Side Meta',
     'Tribesters World',
