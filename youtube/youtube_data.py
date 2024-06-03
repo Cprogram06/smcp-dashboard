@@ -157,6 +157,7 @@ game_list = [
     "1Kin",
     "Moonveil",
     "Wilder World",
+    "Wild Forest",
 
 ]
 
