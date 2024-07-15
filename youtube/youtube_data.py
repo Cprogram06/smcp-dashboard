@@ -131,11 +131,7 @@ game_list = [
     'GodsUnchained',
     'The Sandbox',
     'The Machines Arena',
-<<<<<<< Updated upstream
     'Kaidro',
-=======
-    'Kaidronicle',
->>>>>>> Stashed changes
     'Decentraland',
     'Other Side Meta',
     'Tribesters World',
@@ -154,20 +150,10 @@ game_list = [
     'play_evio',
     'Spider Tanks',
     'League Kingdoms',
-<<<<<<< Updated upstream
-    'Hytopia',
-    'Hychain',
-=======
->>>>>>> Stashed changes
     "Planet Mojo",
     "Mystery Society",
-    "1Kin",
-    "Moonveil",
-<<<<<<< Updated upstream
     "Wilder World",
     "Wild Forest",
-=======
->>>>>>> Stashed changes
 
 ]
 
