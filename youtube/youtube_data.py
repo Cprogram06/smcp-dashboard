@@ -117,12 +117,15 @@ def convert_to_csv(game, data):
     df.to_csv(f"{game_name}.csv")
 
 
-api_key = "AIzaSyBFzQD5yQeerxH05Hw9UU55La3HZCFUk04"
+api_key = "AIzaSyBO5VBo-XQQD3R4fVY4CYJ8ExGtEy_jw9w"
+# AIzaSyBO5VBo-XQQD3R4fVY4CYJ8ExGtEy_jw9w
+# AIzaSyBFzQD5yQeerxH05Hw9UU55La3HZCFUk04
 
 game_list = [
     # 'Pixels Online',
     # 'Apeiron',
     # 'Townstar Game',
+    # "Wild Forest",
     # 'Parallel TCG',
     # 'Axie Infinity',
     # 'Splinterlands',
@@ -149,11 +152,9 @@ game_list = [
     # 'Cryptoblades',
     # 'play_evio',
     # 'Spider Tanks',
-    # 'League Kingdoms',
-    # "Planet Mojo",
-    # "Mystery Society",
-    "Wild Forest",
-
+    'League Kingdoms',
+    "Planet Mojo",
+    "Mystery Society",
 ]
 
 for game in game_list:
