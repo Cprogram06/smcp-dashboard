@@ -117,7 +117,7 @@ def convert_to_csv(game, data):
     df.to_csv(f"{game_name}.csv")
 
 
-api_key = "AIzaSyBO5VBo-XQQD3R4fVY4CYJ8ExGtEy_jw9w"
+api_key = "AIzaSyBFzQD5yQeerxH05Hw9UU55La3HZCFUk04"
 # AIzaSyBO5VBo-XQQD3R4fVY4CYJ8ExGtEy_jw9w
 # AIzaSyBFzQD5yQeerxH05Hw9UU55La3HZCFUk04
 
