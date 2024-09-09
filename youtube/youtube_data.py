@@ -21,7 +21,7 @@ def get_video_data(api_key, search_query):
     """Get video data."""
     video_data = []
     now = datetime.datetime.utcnow()
-    days_ago = now - datetime.timedelta(days=30)  # Get videos published within the last 30 days
+    days_ago = now - datetime.timedelta(days=7)
     days_ago_str = days_ago.strftime("%Y-%m-%dT%H:%M:%SZ")
 
     next_page_token = None  # Initialize next_page_token to None
@@ -123,38 +123,38 @@ api_key = "AIzaSyBFzQD5yQeerxH05Hw9UU55La3HZCFUk04"
 
 game_list = [
     'Pixels Online',
-    # 'Apeiron',
-    # 'Townstar Game',
-    # "Wild Forest",
-    # 'Parallel TCG',
+    'Apeiron',
+    'Townstar Game',
+    "Wild Forest",
+    'Parallel TCG',
     'Axie Infinity',
-    # 'Splinterlands',
-    # 'Deadrop',
-    # 'Illuvium',
-    # 'GodsUnchained',
-    # 'The Sandbox',
-    # 'The Machines Arena',
-    # 'Decentraland',
-    # 'Other Side Meta',
-    # 'Kaidro',
-    # 'Tribesters World',
-    # 'Battle Bears',
-    # 'Aurory Project',
-    # 'zed_run',
-    # 'Nine Chronicles',
-    # 'Walken_io',
-    # 'Blockchain Cutie',
-    # '0xSunflowerland',
-    # 'Undeadblocks',
-    # 'Dehero',
-    # 'Panzerdogs',
-    # 'Chain Guardians',
-    # 'Cryptoblades',
-    # 'play_evio',
-    # 'Spider Tanks',
-    # 'League Kingdoms',
-    # "Planet Mojo",
-    # "Mystery Society",
+    'Splinterlands',
+    'Deadrop',
+    'Illuvium',
+    'GodsUnchained',
+    'The Sandbox',
+    'The Machines Arena',
+    'Decentraland',
+    'Other Side Meta',
+    'Kaidro',
+    'Tribesters World',
+    'Battle Bears',
+    'Aurory Project',
+    'zed_run',
+    'Nine Chronicles',
+    'Walken_io',
+    'Blockchain Cutie',
+    '0xSunflowerland',
+    'Undeadblocks',
+    'Dehero',
+    'Panzerdogs',
+    'Chain Guardians',
+    'Cryptoblades',
+    'play_evio',
+    'Spider Tanks',
+    'League Kingdoms',
+    "Planet Mojo",
+    "Mystery Society",
 ]
 
 for game in game_list:
