@@ -122,7 +122,7 @@ api_key = "AIzaSyBFzQD5yQeerxH05Hw9UU55La3HZCFUk04"
 # AIzaSyBFzQD5yQeerxH05Hw9UU55La3HZCFUk04
 
 game_list = [
-    'Pixels Online',
+    'Pixels',
     'Apeiron',
     'Townstar Game',
     "Wild Forest",
