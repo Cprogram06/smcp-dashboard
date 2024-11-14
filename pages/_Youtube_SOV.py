@@ -1,112 +1,97 @@
-"""Third party imports."""
+"""Third Party Imports."""
 import streamlit as st
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 
-# Read data from CSV
+# Constants
+DEFAULT_CSV_PATHS = {
+    "main_data": 'csvs/SOV - SoV_YT.csv',
+    "axie_vs_field": 'csvs/SOV - YT_axie_vs_field.csv',
+    "ronin_games": 'csvs/SOV - YT_ronin_games.csv',
+    "ronin_vs_field": 'csvs/SOV - YT_RVF.csv'
+}
+
+# Data Loading Functions
 def read_data(filename):
-    """Read data from csv."""
+    """Read data from CSV and ensure 'Date' column is in datetime format if present."""
     df = pd.read_csv(filename)
-    df['Date'] = pd.to_datetime(df['Date'])  # Convert 'Date' column to datetime
+    if 'Date' in df.columns:
+        df['Date'] = pd.to_datetime(df['Date'])
     return df
 
-def generate_line_chart(data,):
-    """Generate Line charts."""
-    # Display the data
+# Chart Generation Functions
+def generate_line_chart(data, title="Trend Over Time"):
+    """Generate line charts for selected count types."""
     st.dataframe(data)
-
-    # Create separate line charts for each count
     for count_type in ['View Count', 'Like Count', 'Comment Count']:
         fig = px.line(data, x='Date', y=count_type, title=f'{count_type} Over Time')
-
-        # Customize the layout (optional)
-        fig.update_layout(
-            xaxis_title='Date',
-            yaxis_title=count_type,
-        )
-
-        # Display the chart
+        fig.update_layout(xaxis_title='Date', yaxis_title=count_type)
         st.plotly_chart(fig)
 
-
-def generate_pie_chart(data,widget_id,chart_title):
-    """Generate Pie Chart."""
-    options = ['View Count', 'Like Count', 'Comment Count']
+def generate_pie_chart(data, options, widget_id, chart_title):
+    """Generate pie chart for selected metrics."""
     selected_options = st.multiselect(widget_id, options, default=options)
-
     fig = go.Figure()
-
     for option in selected_options:
-        fig.add_trace(go.Pie(labels=data['Game'], values=data[option], name=option, textinfo='label+percent', textposition='inside'))
-
+        fig.add_trace(go.Pie(
+            labels=data['Game'], values=data[option], 
+            name=option, textinfo='label+percent', textposition='inside'
+        ))
     fig.update_layout(title=chart_title)
-
     st.plotly_chart(fig)
 
-def generate_bar_chart(data,widget_id):
-    """Generate Bar Chart."""
-    options = ['View Count', 'Like Count', 'Comment Count']
+def generate_bar_chart(data, options, widget_id, chart_title="Bar Chart of Metrics"):
+    """Generate a stacked bar chart of selected metrics."""
     selected_options = st.multiselect(widget_id, options, default=options)
-
-    counts = data.groupby('Game')[selected_options].sum().reset_index()
-    counts['Total'] = counts[selected_options].sum(axis=1)  # Calculate the sum of selected options as the 'Total' column
-    counts_sorted = counts.sort_values(by='Total', ascending=True)  # Sort by the 'Total' column
-
-    labels = counts_sorted['Game']
-    values = counts_sorted[selected_options]
-
+    grouped_data = data.groupby('Game')[selected_options].sum().reset_index()
+    grouped_data['Total'] = grouped_data[selected_options].sum(axis=1)
+    sorted_data = grouped_data.sort_values(by='Total', ascending=True)
+    
     fig = go.Figure()
     for option in selected_options:
-        fig.add_trace(go.Bar(y=labels, x=values[option], orientation='h', name=option))
-
-    fig.update_layout(title='Count of View Count, Like Count, Comment Count',
-                      xaxis_title='Count',
-                      yaxis_title='Game',
-                      barmode='stack')
-
+        fig.add_trace(go.Bar(
+            y=sorted_data['Game'], x=sorted_data[option], orientation='h', name=option
+        ))
+    fig.update_layout(
+        title=chart_title,
+        xaxis_title='Count',
+        yaxis_title='Game',
+        barmode='stack'
+    )
     st.plotly_chart(fig, use_container_width=True)
 
-# Main function
-def main():
-    """Initialize the program."""
-    st.title("Youtube Share of Voice")
+# Main Dashboard UI
+def display_dashboard():
+    """Displays the main dashboard with interactive visualizations."""
+    st.title("YouTube Share of Voice Analysis")
 
-    # Read CSV file
-    filename = 'csvs/SOV - SoV_YT.csv'
-    data = read_data(filename)
-
-    # Generate line chart
+    # Load and display Axie Infinity trend data
     st.subheader("Axie Infinity Trend")
-    generate_line_chart(data)
+    main_data = read_data(DEFAULT_CSV_PATHS["main_data"])
+    generate_line_chart(main_data, "Axie Infinity Trend Over Time")
 
-
-    # Generate pie chart
-    pie_df = pd.read_csv('csvs/SOV - YT_axie_vs_field.csv')
-
-    generate_pie_chart(pie_df,'Select AVF Metrics','Axie Infinity VS Field')
-    generate_bar_chart(pie_df,' ')
-
-    # Generate pie chart
-    # pie_df2 = pd.read_csv('csvs/SOV - YT_axie_vs_field - Copy.csv')
-
-    # generate_pie_chart(pie_df2,'Select Metrics','Axie Infinity VS Field(With 3 Big Creators)')
-    # generate_bar_chart(pie_df2,'     ')
-
-    # Generate pie chart for Ronin Games
-    rgpie_df = pd.read_csv('csvs/SOV - YT_ronin_games.csv')
-
-    generate_pie_chart(rgpie_df,'Select Ronin Games Metrics','Ronin Games VS Each Other')
-    generate_bar_chart(rgpie_df,'  ')
-
-    # Generate pie chart for Ronin Games vs Field
-    rvfpie_df = pd.read_csv('csvs/SOV - YT_RVF.csv')
-
-
-    generate_pie_chart(rvfpie_df,'Select RVF Metrics','Ronin Games VS Field')
-    generate_bar_chart(rvfpie_df,'   ')
-
+    # Define metrics options for charts
+    metrics_options = ['View Count', 'Like Count', 'Comment Count']
     
+    # Display Axie Infinity vs Field charts
+    st.subheader("Axie Infinity vs Field")
+    axie_vs_field_data = read_data(DEFAULT_CSV_PATHS["axie_vs_field"])
+    generate_pie_chart(axie_vs_field_data, metrics_options, 'Select AVF Metrics', 'Axie Infinity VS Field')
+    generate_bar_chart(axie_vs_field_data, metrics_options, 'Select AVF Metrics', 'Axie Infinity VS Field Bar Chart')
 
+    # Display Ronin Games vs Each Other charts
+    st.subheader("Ronin Games vs Each Other")
+    ronin_games_data = read_data(DEFAULT_CSV_PATHS["ronin_games"])
+    generate_pie_chart(ronin_games_data, metrics_options, 'Select Ronin Games Metrics', 'Ronin Games VS Each Other')
+    generate_bar_chart(ronin_games_data, metrics_options, 'Select Ronin Games Metrics', 'Ronin Games VS Each Other Bar Chart')
+
+    # Display Ronin Games vs Field charts
+    st.subheader("Ronin Games vs Field")
+    ronin_vs_field_data = read_data(DEFAULT_CSV_PATHS["ronin_vs_field"])
+    generate_pie_chart(ronin_vs_field_data, metrics_options, 'Select RVF Metrics', 'Ronin Games VS Field')
+    generate_bar_chart(ronin_vs_field_data, metrics_options, 'Select RVF Metrics', 'Ronin Games VS Field Bar Chart')
+
+# Run main dashboard function
 if __name__ == '__main__':
-    main()
+    display_dashboard()
