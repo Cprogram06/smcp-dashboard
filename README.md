@@ -45,7 +45,38 @@ The project integrates several data sources, including the Twitter API, Google A
 - **[timeline_fetch](twitter/timeline_fetch.py)**: Get the recent tweets data of a handle.
 - **[twitter_data](twitter/twitter_data.py)**: Get all the data of a tweet mentioning a handle, including tweet count, likes count, retweet count, and reply count.
 - **[youtube_data](youtube/youtube_data.py)**: Get the data of a video using the game search endpoint.
+- **[transform_yt_data](youtube/transform_yt_data.py)**: Transform gathered youtube data for visualization use.
 
+## Setup and Deployment on Streamlit Cloud
+
+Follow these steps to deploy this project on Streamlit Cloud:
+
+### Step 1: Push Your Project to GitHub
+- If you haven’t already, push your project to a GitHub repository. This includes all the necessary project files like `Twitter_SOV.py`, `requirements.txt`, and the folder structure with your scripts.
+
+### Step 2: Sign Up/Login to Streamlit Cloud
+- Go to [Streamlit Cloud](https://share.streamlit.io) and sign up for a new account or log in to your existing account.
+
+### Step 3: Connect Streamlit to GitHub
+- Once you are logged into your Streamlit account, click on **New App**.
+- Choose **GitHub** as your source and grant Streamlit access to your GitHub repositories.
+- Select the repository that contains your project and click on it.
+
+### Step 4: Configure the App
+- Choose the branch (usually `main` or `master`) where your `Twitter_SOV.py` file is located.
+- Ensure `Twitter_SOV.py` is the main file that runs the Streamlit app.
+- Optionally, configure environment variables or settings (if needed).
+
+### Step 5: Deploy the App
+- Click on **Deploy** to build and deploy your app.
+- Streamlit will automatically install the dependencies listed in your `requirements.txt` file, and the app will be up and running.
+
+### Step 6: Access the Dashboard
+- Once deployed, Streamlit will provide you with a unique URL to access your app. You can share this link with others or use it to embed the dashboard in your documentation.
+
+### Troubleshooting:
+- If there are issues with dependencies or missing packages, make sure that all required libraries are listed in `requirements.txt`.
+- If there are errors related to the APIs (Twitter, YouTube, or Twitch), ensure you have the correct API keys and access tokens in place.
 
 ## Future Improvements
 - **Real-Time Data Processing**: Implement real-time data collection and dashboard updates.
