@@ -46,7 +46,7 @@ The project integrates several data sources, including the Twitter API, Google A
 - **More Social Platforms**: Expand the project to include other social platforms like Instagram, Facebook, etc.
 
 ## License
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE]([https://pages.github.com/](https://github.com/Cprogram06/smcp-dashboard/blob/main/LICENSE)) file for details.
 
 ## Acknowledgements
 - **Twitter API**: For social media data collection.
