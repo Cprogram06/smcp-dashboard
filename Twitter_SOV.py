@@ -25,7 +25,7 @@ def generate_line_chart(data, metric_columns):
     """Generate a line chart for selected metrics over time."""
     chart_data = data.set_index('Date')  # Set 'Date' column as index
 
-    options = st.multiselect('Select Counts to Display', metric_columns, default=metric_columns)
+    options = st.multiselect('Select Counts to Display', metric_columns, default=metric_columns, key="line_chart")
     selected_columns = [option for option in options if option in chart_data.columns]
 
     if selected_columns:
@@ -44,7 +44,7 @@ def generate_line_chart(data, metric_columns):
 
 def generate_pie_chart(data, options, widget_id, chart_title):
     """Generate pie chart for selected metrics."""
-    selected_options = st.multiselect(widget_id, options, default=options)
+    selected_options = st.multiselect(widget_id, options, default=options, key=f"pie_chart_{widget_id}")
     fig = go.Figure()
 
     for option in selected_options:
@@ -57,7 +57,7 @@ def generate_pie_chart(data, options, widget_id, chart_title):
 
 def generate_bar_chart(data, options, widget_id, chart_title="Bar Chart of Metrics"):
     """Generate a stacked bar chart of selected metrics."""
-    selected_options = st.multiselect(widget_id, options, default=options)
+    selected_options = st.multiselect(widget_id, options, default=options, key=f"bar_chart_{widget_id}")
     grouped_data = data.groupby('Game')[selected_options].sum().reset_index()
     grouped_data['Total'] = grouped_data[selected_options].sum(axis=1)
     sorted_data = grouped_data.sort_values(by='Total', ascending=True)
@@ -74,6 +74,7 @@ def generate_bar_chart(data, options, widget_id, chart_title="Bar Chart of Metri
         barmode='stack'
     )
     st.plotly_chart(fig, use_container_width=True)
+
 
 # Main Dashboard UI
 def display_dashboard():
