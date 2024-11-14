@@ -89,28 +89,23 @@ def display_dashboard():
     generate_line_chart(main_data, metrics_options)
 
     # Display Axie Infinity vs Field charts
-    st.subheader("Axie Infinity vs Field")
-    axie_vs_field_data = read_data(CSV_PATHS["axie_vs_field"])
-    generate_pie_chart(axie_vs_field_data, metrics_options, 'Select AVF metrics', 'Axie Infinity VS Field')
-    generate_bar_chart(axie_vs_field_data, metrics_options, 'Select AVF metrics', 'Axie Infinity VS Field Bar Chart')
+    display_comparison_charts("Axie Infinity vs Field", CSV_PATHS["axie_vs_field"], metrics_options)
 
     # Display Ronin Network vs Other Chains charts
-    st.subheader("Ronin Network vs Other Chains")
-    ronin_vs_field_data = read_data(CSV_PATHS["ronin_vs_field"])
-    generate_pie_chart(ronin_vs_field_data, metrics_options, 'Select chain metrics', 'Ronin Network vs Other Chains')
-    generate_bar_chart(ronin_vs_field_data, metrics_options, 'Select chain metrics', 'Ronin Network vs Other Chains Bar Chart')
+    display_comparison_charts("Ronin Network vs Other Chains", CSV_PATHS["ronin_vs_field"], metrics_options)
 
     # Display Ronin Games vs Each Other charts
-    st.subheader("Ronin Games vs Each Other")
-    ronin_games_data = read_data(CSV_PATHS["ronin_games"])
-    generate_pie_chart(ronin_games_data, metrics_options, 'Select Ronin Games metrics', 'Ronin Games VS Each Other')
-    generate_bar_chart(ronin_games_data, metrics_options, 'Select Ronin Games metrics', 'Ronin Games VS Each Other Bar Chart')
+    display_comparison_charts("Ronin Games vs Each Other", CSV_PATHS["ronin_games"], metrics_options)
 
     # Display Ronin Games vs Field charts
-    st.subheader("Ronin Games vs Field")
-    ronin_games_vs_field_data = read_data(CSV_PATHS["ronin_games_vs_field"])
-    generate_pie_chart(ronin_games_vs_field_data, metrics_options, 'Select RVF metrics', 'Ronin Games VS Field')
-    generate_bar_chart(ronin_games_vs_field_data, metrics_options, 'Select RVF metrics', 'Ronin Games VS Field Bar Chart')
+    display_comparison_charts("Ronin Games vs Field", CSV_PATHS["ronin_games_vs_field"], metrics_options)
+
+def display_comparison_charts(title, data_path, metrics_options):
+    """Helper function to display pie and bar charts for comparison data."""
+    st.subheader(title)
+    comparison_data = read_data(data_path)
+    generate_pie_chart(comparison_data, metrics_options, f'Select {title} metrics', f'{title} Pie Chart')
+    generate_bar_chart(comparison_data, metrics_options, f'Select {title} metrics', f'{title} Bar Chart')
 
 # Run main dashboard function
 if __name__ == '__main__':

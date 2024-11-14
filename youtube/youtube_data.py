@@ -1,160 +1,189 @@
-"""Third Party imports."""
+"""Third Party Imports."""
+import os
+import time
 import requests
 import pandas as pd
 from datetime import datetime, timedelta
+from dotenv import load_dotenv
 
+# Load environment variables
+load_dotenv()
+API_KEY = os.getenv("YOUTUBE_API_KEY")
 
-# Define a datetime object for the current date and time
+# Date range for data extraction (past 7 days)
 now = datetime.utcnow()
-
-# Define a datetime object for 7 days ago
 days_ago = now - timedelta(days=7)
-
-# Format the datetime objects as ISO 8601 strings
-now_str = now.strftime("%Y-%m-%dT%H:%M:%SZ")
 days_ago_str = days_ago.strftime("%Y-%m-%dT%H:%M:%SZ")
 
-import datetime
 
-
-def get_video_data(api_key, search_query):
-    """Get video data."""
-    video_data = []
-    now = datetime.datetime.utcnow()
-    days_ago = now - datetime.timedelta(days=7)
-    days_ago_str = days_ago.strftime("%Y-%m-%dT%H:%M:%SZ")
-
-    next_page_token = None  # Initialize next_page_token to None
+def extract_video_data(search_query, max_results=50, max_retries=3, retry_delay=5):
+    """
+    Extract video data from the YouTube API for a given search query.
+    
+    Args:
+        search_query (str): The game name or search term.
+        max_results (int): Maximum number of results per page.
+        max_retries (int): Maximum retries on request failure.
+        retry_delay (int): Delay between retries in seconds.
+        
+    Returns:
+        list: Raw video data (ID and details for transformation).
+    """
+    video_ids = []
+    next_page_token = None
 
     while True:
-        url = f"https://www.googleapis.com/youtube/v3/search?part=snippet&q=allintitle%3A{search_query}&type=video&maxResults=50&key={api_key}&publishedAfter={days_ago_str}"
+        search_url = (
+            f"https://www.googleapis.com/youtube/v3/search?part=snippet"
+            f"&q=allintitle%3A{search_query}&type=video&maxResults={max_results}"
+            f"&key={API_KEY}&publishedAfter={days_ago_str}"
+        )
         if next_page_token:
-            url += f"&pageToken={next_page_token}"
+            search_url += f"&pageToken={next_page_token}"
 
-        response = requests.get(url)
-
-        if response.status_code != 200:
-            print(
-                "Error: Failed to retrieve video search data. Response code:",
-                response.status_code,
-            )
-            return []
-
-        video_ids = [item["id"]["videoId"] for item in response.json()["items"]]
-        stats_url = f"https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&id={','.join(video_ids)}&key={api_key}"
-
-        stats_response = requests.get(stats_url)
-        if stats_response.status_code != 200:
-            print(
-                "Error: Failed to retrieve video statistics data. Response code:",
-                stats_response.status_code,
-            )
-            return []
-
-        stats_data = stats_response.json()
-        try:
-            for item in stats_data["items"]:
-                channel_url = f"https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics&id={item['snippet']['channelId']}&key={api_key}"
-                channel_response = requests.get(channel_url)
-                if channel_response.status_code != 200:
-                    print(
-                        "Error: Failed to retrieve channel data. Response code:",
-                        channel_response.status_code,
-                    )
-                    continue
-
-                video_id = item["id"]
-                published_date = item["snippet"]["publishedAt"]
-                title = item["snippet"]["title"]
-                view_count = item["statistics"]["viewCount"]
-                like_count = item["statistics"]["likeCount"]
-                comment_count = item["statistics"]["commentCount"]
-                channel_title = channel_response.json()["items"][0]["snippet"]["title"]
-                subscriber_count = channel_response.json()["items"][0]["statistics"][
-                    "subscriberCount"
-                ]
-
-                video_data.append(
-                    [
-                        video_id,
-                        published_date,
-                        title,
-                        view_count,
-                        like_count,
-                        comment_count,
-                        channel_title,
-                        subscriber_count,
-                    ]
-                )
-        except:
-            pass
-
-        if "nextPageToken" in response.json():
-            next_page_token = response.json()["nextPageToken"]
+        for _ in range(max_retries):
+            response = requests.get(search_url)
+            if response.status_code == 200:
+                break
+            print(f"Error {response.status_code}: Retrying in {retry_delay} seconds...")
+            time.sleep(retry_delay)
         else:
+            print(f"Failed to retrieve data for '{search_query}' after {max_retries} retries.")
+            return []
+
+        video_ids.extend(item["id"]["videoId"] for item in response.json().get("items", []))
+        next_page_token = response.json().get("nextPageToken")
+        if not next_page_token:
             break
+
+    return video_ids
+
+
+def transform_video_data(video_ids, max_retries=3, retry_delay=5):
+    """
+    Transform raw video IDs into detailed video information.
+    
+    Args:
+        video_ids (list): List of video IDs.
+        max_retries (int): Maximum retries for API requests.
+        retry_delay (int): Delay between retries.
+        
+    Returns:
+        list: Transformed video data including view count, like count, etc.
+    """
+    video_data = []
+    if not video_ids:
+        return video_data
+
+    stats_url = (
+        f"https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics"
+        f"&id={','.join(video_ids)}&key={API_KEY}"
+    )
+
+    for _ in range(max_retries):
+        stats_response = requests.get(stats_url)
+        if stats_response.status_code == 200:
+            break
+        print(f"Error {stats_response.status_code}: Retrying stats retrieval in {retry_delay} seconds...")
+        time.sleep(retry_delay)
+    else:
+        print(f"Failed to retrieve stats after {max_retries} retries.")
+        return video_data
+
+    stats_data = stats_response.json()
+    for item in stats_data.get("items", []):
+        video_id = item["id"]
+        snippet = item["snippet"]
+        stats = item.get("statistics", {})
+        channel_id = snippet["channelId"]
+        
+        # Extract channel data
+        channel_data = extract_channel_data(channel_id, max_retries, retry_delay)
+        channel_title = channel_data.get("title")
+        subscriber_count = channel_data.get("subscriberCount")
+
+        video_data.append([
+            video_id,
+            snippet["publishedAt"],
+            snippet["title"],
+            stats.get("viewCount", 0),
+            stats.get("likeCount", 0),
+            stats.get("commentCount", 0),
+            channel_title,
+            subscriber_count
+        ])
 
     return video_data
 
 
-
-def convert_to_csv(game, data):
-    """Convert data to CSV."""
-    df = pd.DataFrame(
-        data,
-        columns=[
-            "Video ID",
-            "Published Date",
-            "Title",
-            "View Count",
-            "Like Count",
-            "Comment Count",
-            "Channel Title",
-            "Subscriber Count",
-        ],
+def extract_channel_data(channel_id, max_retries=3, retry_delay=5):
+    """
+    Extracts channel data (name and subscriber count) from YouTube API.
+    
+    Args:
+        channel_id (str): Channel ID.
+        max_retries (int): Maximum retries for API requests.
+        retry_delay (int): Delay between retries.
+        
+    Returns:
+        dict: Dictionary containing channel title and subscriber count.
+    """
+    channel_url = (
+        f"https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics"
+        f"&id={channel_id}&key={API_KEY}"
     )
+
+    for _ in range(max_retries):
+        channel_response = requests.get(channel_url)
+        if channel_response.status_code == 200:
+            break
+        print(f"Error {channel_response.status_code}: Retrying channel data in {retry_delay} seconds...")
+        time.sleep(retry_delay)
+    else:
+        print(f"Failed to retrieve channel data after {max_retries} retries.")
+        return {}
+
+    channel_info = channel_response.json().get("items", [{}])[0]
+    return {
+        "title": channel_info.get("snippet", {}).get("title"),
+        "subscriberCount": channel_info.get("statistics", {}).get("subscriberCount")
+    }
+
+
+def load_to_csv(game, data):
+    """
+    Load transformed data to a CSV file.
+    
+    Args:
+        game (str): The name of the game or search term.
+        data (list): The data to load into CSV.
+    """
+    df = pd.DataFrame(data, columns=[
+        "Video ID",
+        "Published Date",
+        "Title",
+        "View Count",
+        "Like Count",
+        "Comment Count",
+        "Channel Title",
+        "Subscriber Count",
+    ])
     game_name = game.replace(" ", "_")
-    df.to_csv(f"{game_name}.csv")
+    output_file = f"{game_name}.csv"
+    df.to_csv(output_file, index=False)
+    print(f"Data saved to {output_file}")
 
 
-api_key = "AIzaSyBFzQD5yQeerxH05Hw9UU55La3HZCFUk04"
-# AIzaSyBO5VBo-XQQD3R4fVY4CYJ8ExGtEy_jw9w
-# AIzaSyBFzQD5yQeerxH05Hw9UU55La3HZCFUk04
+if __name__ == "__main__":
+    # Read games from CSV file
+    game_df = pd.read_csv("game_list.csv")
+    game_list = game_df['game'].tolist()
 
-game_list = [
-    "Pixels",
-    "Apeiron",
-    "The Machines Arena",
-    "Wild Forest",
-    "Parallel TCG",
-    "Axie Infinity",
-    "Illuvium",
-    "GodsUnchained",
-    "Decentraland",
-    "Kaidro",
-    "Other Side Meta",
-    "Rift Storm",
-    "Sparkball",
-    "Lumiterra",
-    "Pixel Heroes",
-    "Party Icons",
-    "Runiverse",
-    "Shatterline",
-    "Off The Grid",
-    "My Pet Hooligan",
-    "Pirate Nations",
-    "Bigtime",
-    "Fableborne",
-    "Nyan Heroes",
-    "Treeverse",
-    "Matr1x Fire",
-    "Block Lords",
-    "Shardbound",
-    "Star Atlas"
-]
-
-for game in game_list:
-    """Loop Though all of the games"""
-    print(f"Searching for video of {game}")
-    vid_data = get_video_data(api_key, game)
-    convert_to_csv(game, vid_data)
+    for game in game_list:
+        print(f"Extracting videos for '{game}'")
+        video_ids = extract_video_data(game)
+        if video_ids:
+            print(f"Transforming data for '{game}'")
+            video_data = transform_video_data(video_ids)
+            print(f"Loading data for '{game}' into CSV")
+            load_to_csv(game, video_data)
