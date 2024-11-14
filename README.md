@@ -40,13 +40,19 @@ The project integrates several data sources, including the Twitter API, Google A
 ### YouTube Data Insights
 - **Views**, **Likes**, and **Comments**: Monitor the performance of videos, with comparisons between the company product's channel and competitors.
 
+## Scripts
+- **[get_tweet_count](twitter/get_tweet_count.py)**: Get the total tweet count of a handle on the game list based on the set data.
+- **[timeline_fetch](twitter/timeline_fetch.py)**: Get the recent tweets data of a handle.
+- **[twitter_data](twitter/twitter_data.py)**: Get all the data of a tweet mentioning a handle, including tweet count, likes count, retweet count, and reply count.
+- **[youtube_data](youtube/youtube_data.py)**: Get the data of a video using the game search endpoint.
+
+
 ## Future Improvements
 - **Real-Time Data Processing**: Implement real-time data collection and dashboard updates.
-- **Sentiment Analysis**: Add sentiment analysis to track public opinion on the company product vs. competitors.
 - **More Social Platforms**: Expand the project to include other social platforms like Instagram, Facebook, etc.
 
 ## License
-This project is licensed under the MIT License - see the [LICENSE]([https://pages.github.com/](https://github.com/Cprogram06/smcp-dashboard/blob/main/LICENSE)) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Acknowledgements
 - **Twitter API**: For social media data collection.
