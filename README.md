@@ -5,6 +5,8 @@ This data engineering project focuses on providing insights and comparisons betw
 
 The project integrates several data sources, including the Twitter API, Google API V3, and Sullygnome (for Twitch data), to collect real-time and historical data. The collected data is processed and transformed using Python and Pandas, and presented in an interactive dashboard using Streamlit for easy client access and decision-making.
 
+You can interact with [the demo here](https://smcp-sov.streamlit.app)!
+
 ## Data Sources
 - **Twitter**: Data is collected using the Twitter API to monitor engagement metrics, such as tweets, retweets, and likes for both the company product and its competitors.
 - **Twitch**: The project pulls Twitch data via Sullygnome, an online service that provides data and statistics for Twitch streams.
