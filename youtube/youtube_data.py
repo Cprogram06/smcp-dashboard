@@ -176,7 +176,7 @@ def load_to_csv(game, data):
 
 if __name__ == "__main__":
     # Read games from CSV file
-    game_df = pd.read_csv("game_list.csv")
+    game_df = pd.read_csv("youtube\game_list.csv")
     game_list = game_df['game'].tolist()
 
     for game in game_list:
