@@ -60,60 +60,47 @@ def extract_video_data(search_query, max_results=50, max_retries=3, retry_delay=
 
 
 def transform_video_data(video_ids, max_retries=3, retry_delay=5):
-    """
-    Transform raw video IDs into detailed video information.
-    
-    Args:
-        video_ids (list): List of video IDs.
-        max_retries (int): Maximum retries for API requests.
-        retry_delay (int): Delay between retries.
-        
-    Returns:
-        list: Transformed video data including view count, like count, etc.
-    """
     video_data = []
     if not video_ids:
+        print("No video IDs found.")
         return video_data
 
-    stats_url = (
-        f"https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics"
-        f"&id={','.join(video_ids)}&key={API_KEY}"
-    )
-
-    for _ in range(max_retries):
-        stats_response = requests.get(stats_url)
-        if stats_response.status_code == 200:
-            break
-        print(f"Error {stats_response.status_code}: Retrying stats retrieval in {retry_delay} seconds...")
-        time.sleep(retry_delay)
-    else:
-        print(f"Failed to retrieve stats after {max_retries} retries.")
-        return video_data
-
-    stats_data = stats_response.json()
-    for item in stats_data.get("items", []):
-        video_id = item["id"]
-        snippet = item["snippet"]
-        stats = item.get("statistics", {})
-        channel_id = snippet["channelId"]
+    batch_size = 50
+    for i in range(0, len(video_ids), batch_size):
+        batch = video_ids[i:i + batch_size]
+        stats_url = (
+            f"https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics"
+            f"&id={','.join(batch)}&key={API_KEY}"
+        )
         
-        # Extract channel data
-        channel_data = extract_channel_data(channel_id, max_retries, retry_delay)
-        channel_title = channel_data.get("title")
-        subscriber_count = channel_data.get("subscriberCount")
-
-        video_data.append([
-            video_id,
-            snippet["publishedAt"],
-            snippet["title"],
-            stats.get("viewCount", 0),
-            stats.get("likeCount", 0),
-            stats.get("commentCount", 0),
-            channel_title,
-            subscriber_count
-        ])
+        for _ in range(max_retries):
+            stats_response = requests.get(stats_url)
+            if stats_response.status_code == 200:
+                stats_data = stats_response.json()
+                for item in stats_data.get("items", []):
+                    video_id = item["id"]
+                    snippet = item["snippet"]
+                    stats = item.get("statistics", {})
+                    video_data.append([
+                        video_id,
+                        snippet["publishedAt"],
+                        snippet["title"],
+                        stats.get("viewCount", 0),
+                        stats.get("likeCount", 0),
+                        stats.get("commentCount", 0),
+                        snippet.get("channelTitle", ""),
+                        stats.get("subscriberCount", 0)
+                    ])
+                break
+            else:
+                print(f"Error {stats_response.status_code}: {stats_response.text}")
+                time.sleep(retry_delay)
+        else:
+            print(f"Failed to retrieve stats for batch: {batch}")
+            continue
 
     return video_data
+
 
 
 def extract_channel_data(channel_id, max_retries=3, retry_delay=5):
